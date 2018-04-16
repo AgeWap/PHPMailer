@@ -717,6 +717,11 @@ class PHPMailer
     const STD_LINE_LENGTH = 76;
 
     /**
+     * @var bool
+     */
+    protected $Imitation    = false;
+
+    /**
      * Constructor.
      *
      * @param bool $exceptions Should we throw external exceptions?
@@ -887,6 +892,14 @@ class PHPMailer
             $this->Sendmail = $ini_sendmail_path;
         }
         $this->Mailer = 'qmail';
+    }
+
+    /**
+     * @param bool $imitation
+     */
+    public function isImitation($imitation = true)
+    {
+        $this->Imitation    = $imitation;
     }
 
     /**
@@ -1312,6 +1325,9 @@ class PHPMailer
      */
     public function send()
     {
+        if ($this->Imitation) {
+            return false;
+        }
         try {
             if (!$this->preSend()) {
                 return false;
